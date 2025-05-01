@@ -11,7 +11,6 @@ pagina_html = """
   <title>Verificación de Certificados</title>
   <style>
     body { margin: 0; font-family: 'Helvetica', 'Arial', sans-serif; background-color: #f4f4f4; }
-    header { background-color: #0033a0; color: white; padding: 20px; text-align: center; }
     .contenedor {
       background-color: white; max-width: 500px; margin: 50px auto; padding: 30px;
       border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); text-align: center;
@@ -27,7 +26,6 @@ pagina_html = """
   </style>
 </head>
 <body>
-  <header><h1>Gobierno de Chile – Registro de Verificación</h1></header>
   <div class='contenedor'>
     <h2>Verificación de Certificados</h2>
     <input type='text' id='codigo' placeholder='Ingrese código del certificado'>
