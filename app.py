@@ -10,40 +10,77 @@ pagina_html = """
   <meta charset='UTF-8'>
   <title>Verificación de Certificados</title>
   <style>
-    body { margin: 0; font-family: 'Helvetica', 'Arial', sans-serif; background-color: #f4f4f4; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+    }
     .contenedor {
-      background-color: white; max-width: 500px; margin: 50px auto; padding: 30px;
-      border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); text-align: center;
+      margin: 80px auto;
+      max-width: 500px;
+      padding: 30px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.05);
+      text-align: center;
     }
-    h2 { color: #0033a0; }
-    input { padding: 10px; width: 100%; margin-bottom: 10px; font-size: 16px; }
+    h2 {
+      background-color: #e7f0fa;
+      color: #3a6ea5;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 20px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
     button {
-      background-color: #0033a0; color: white; border: none; padding: 10px 20px;
-      font-size: 16px; cursor: pointer; border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
     }
-    button:hover { background-color: #002070; }
-    #respuesta { margin-top: 20px; font-weight: bold; font-size: 16px; }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #respuesta {
+      margin-top: 15px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <div class='contenedor'>
+  <div class="contenedor">
     <h2>Verificación de Certificados</h2>
-    <input type='text' id='codigo' placeholder='Ingrese código del certificado'>
-    <button onclick='verificar()'>Verificar</button>
-    <div id='respuesta'></div>
+    <div style="text-align: left;">
+      <label>Folio:</label><br>
+      <input type="text" id="folio" placeholder="Ej: 500004443232"><br>
+      <label>Código de Verificación:</label><br>
+      <input type="text" id="codigo" placeholder="Ej: 2rR4t56Cv332"><br>
+    </div>
+    <button onclick="verificar()">Consultar</button>
+    <div id="respuesta"></div>
   </div>
+
   <script>
     function verificar() {
-      const codigo = document.getElementById('codigo').value.trim();
-      if (!codigo) {
-        document.getElementById('respuesta').innerText = 'Debe ingresar un código.';
-        document.getElementById('respuesta').style.color = 'red';
+      const codigo = document.getElementById("codigo").value.trim();
+      const folio = document.getElementById("folio").value.trim();
+      if (!codigo || !folio) {
+        document.getElementById("respuesta").innerText = "Debe ingresar folio y código.";
+        document.getElementById("respuesta").style.color = "red";
         return;
       }
-      fetch('/verificar?codigo=' + codigo)
+      fetch(`/verificar?codigo=${codigo}`)
         .then(res => res.json())
         .then(data => {
-          const div = document.getElementById('respuesta');
+          const div = document.getElementById("respuesta");
           if (data.valido) {
             div.innerHTML = "✅ " + data.mensaje + "<br><a href='" + data.pdf + "' target='_blank'>Descargar certificado PDF</a>";
             div.style.color = 'green';
