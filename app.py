@@ -2,16 +2,16 @@ from flask import Flask, request, jsonify, render_template_string
 
 app = Flask(__name__)
 
-pagina_html = '''
+pagina_html = """
 <!DOCTYPE html>
-<html lang="es">
+<html lang='es'>
 <head>
-  <meta charset="UTF-8">
+  <meta charset='UTF-8'>
   <title>Verificación de Certificados</title>
   <style>
     body {
       margin: 0;
-      font-family: "Helvetica", "Arial", sans-serif;
+      font-family: 'Helvetica', 'Arial', sans-serif;
       background-color: #f4f4f4;
     }
     header {
@@ -61,33 +61,33 @@ pagina_html = '''
   <header>
     <h1>Gobierno de Chile – Registro de Verificación</h1>
   </header>
-  <div class="contenedor">
+  <div class='contenedor'>
     <h2>Verificación de Certificados</h2>
-    <input type="text" id="codigo" placeholder="Ingrese código del certificado">
-    <button onclick="verificar()">Verificar</button>
-    <div id="respuesta"></div>
+    <input type='text' id='codigo' placeholder='Ingrese código del certificado'>
+    <button onclick='verificar()'>Verificar</button>
+    <div id='respuesta'></div>
   </div>
 
   <script>
     function verificar() {
-      const codigo = document.getElementById("codigo").value.trim();
+      const codigo = document.getElementById('codigo').value.trim();
       if (!codigo) {
-        document.getElementById("respuesta").innerText = "Debe ingresar un código.";
-        document.getElementById("respuesta").style.color = "red";
+        document.getElementById('respuesta').innerText = 'Debe ingresar un código.';
+        document.getElementById('respuesta').style.color = 'red';
         return;
       }
-      fetch("/verificar?codigo=" + codigo)
+      fetch('/verificar?codigo=' + codigo)
         .then(res => res.json())
         .then(data => {
-          const div = document.getElementById("respuesta");
+          const div = document.getElementById('respuesta');
           div.innerText = data.mensaje;
-          div.style.color = data.valido ? "green" : "red";
+          div.style.color = data.valido ? 'green' : 'red';
         });
     }
   </script>
 </body>
 </html>
-'''
+"""
 
 @app.route('/')
 def index():
