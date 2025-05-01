@@ -7,24 +7,75 @@ pagina_html = '''
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Verificador</title>
+  <title>Verificación de Certificados</title>
   <style>
-    body { font-family: Arial; text-align: center; margin-top: 50px; }
-    input { padding: 10px; width: 250px; }
-    button { padding: 10px 20px; margin-top: 10px; }
-    #respuesta { margin-top: 20px; font-weight: bold; }
+    body {
+      margin: 0;
+      font-family: "Helvetica", "Arial", sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #0033a0;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .contenedor {
+      background-color: white;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h2 {
+      color: #0033a0;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #0033a0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #002070;
+    }
+    #respuesta {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
-  <h2>Verificación de Certificados</h2>
-  <input type="text" id="codigo" placeholder="Ingrese código">
-  <br>
-  <button onclick="verificar()">Verificar</button>
-  <div id="respuesta"></div>
+  <header>
+    <h1>Gobierno de Chile – Registro de Verificación</h1>
+  </header>
+  <div class="contenedor">
+    <h2>Verificación de Certificados</h2>
+    <input type="text" id="codigo" placeholder="Ingrese código del certificado">
+    <button onclick="verificar()">Verificar</button>
+    <div id="respuesta"></div>
+  </div>
 
   <script>
     function verificar() {
-      const codigo = document.getElementById("codigo").value;
+      const codigo = document.getElementById("codigo").value.trim();
+      if (!codigo) {
+        document.getElementById("respuesta").innerText = "Debe ingresar un código.";
+        document.getElementById("respuesta").style.color = "red";
+        return;
+      }
       fetch("/verificar?codigo=" + codigo)
         .then(res => res.json())
         .then(data => {
