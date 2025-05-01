@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template_string, send_from_directory
 import os
+import csv
 
 app = Flask(__name__)
 
@@ -11,82 +12,93 @@ pagina_html = """
   <title>Verificación de Certificados</title>
   <style>
     body {
-      margin: 0;
+      background-color: #fff;
       font-family: Arial, sans-serif;
-      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
     }
-    .contenedor {
-      margin: 80px auto;
+    .container {
       max-width: 500px;
+      margin: 100px auto;
       padding: 30px;
       border: 1px solid #ddd;
       border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.05);
       text-align: center;
     }
     h2 {
-      background-color: #e7f0fa;
-      color: #3a6ea5;
+      font-size: 24px;
+      color: #336699;
+      background-color: #f5f5f5;
       padding: 10px;
       border-radius: 6px;
-      font-size: 20px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 20px;
+      font-weight: bold;
     }
     input {
-      width: 90%;
+      width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      font-size: 14px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     button {
       background-color: #007bff;
       color: white;
       border: none;
       padding: 10px 20px;
+      margin-top: 20px;
       border-radius: 5px;
-      font-size: 14px;
+      font-size: 16px;
       cursor: pointer;
     }
     button:hover {
       background-color: #0056b3;
     }
     #respuesta {
-      margin-top: 15px;
+      margin-top: 20px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="contenedor">
+  <div class="container">
     <h2>Verificación de Certificados</h2>
-    <div style="text-align: left;">
-      <label>Folio:</label><br>
-      <input type="text" id="folio" placeholder="Ej: 500004443232"><br>
-      <label>Código de Verificación:</label><br>
-      <input type="text" id="codigo" placeholder="Ej: 2rR4t56Cv332"><br>
-    </div>
+    <label for="folio">Folio:</label>
+    <input type="text" id="folio" placeholder="Ej: 500004443232">
+    
+    <label for="codigo">Código de Verificación:</label>
+    <input type="text" id="codigo" placeholder="Ej: ABC123">
+    
     <button onclick="verificar()">Consultar</button>
     <div id="respuesta"></div>
   </div>
 
   <script>
     function verificar() {
-      const codigo = document.getElementById("codigo").value.trim();
-      const folio = document.getElementById("folio").value.trim();
-      if (!codigo || !folio) {
-        document.getElementById("respuesta").innerText = "Debe ingresar folio y código.";
-        document.getElementById("respuesta").style.color = "red";
+      const folio = document.getElementById('folio').value.trim();
+      const codigo = document.getElementById('codigo').value.trim();
+      const respuesta = document.getElementById('respuesta');
+
+      if (!folio || !codigo) {
+        respuesta.innerText = 'Debe ingresar el folio y el código.';
+        respuesta.style.color = 'red';
         return;
       }
-      fetch(`/verificar?codigo=${codigo}`)
+
+      fetch('/verificar?folio=' + folio + '&codigo=' + codigo)
         .then(res => res.json())
         .then(data => {
-          const div = document.getElementById("respuesta");
           if (data.valido) {
-            div.innerHTML = "✅ " + data.mensaje + "<br><a href='" + data.pdf + "' target='_blank'>Descargar certificado PDF</a>";
-            div.style.color = 'green';
+            respuesta.innerHTML = "✅ " + data.mensaje + "<br><a href='" + data.pdf + "' target='_blank'>Descargar certificado PDF</a>";
+            respuesta.style.color = 'green';
           } else {
-            div.innerText = "❌ " + data.mensaje;
-            div.style.color = 'red';
+            respuesta.innerText = "❌ " + data.mensaje;
+            respuesta.style.color = 'red';
           }
         });
     }
@@ -101,17 +113,25 @@ def index():
 
 @app.route('/verificar')
 def verificar():
+    folio = request.args.get('folio', '').strip()
     codigo = request.args.get('codigo', '').strip()
-    with open('codigos.txt', 'r') as f:
-        codigos_validos = [line.strip() for line in f.readlines()]
-    if codigo in codigos_validos:
+    valido = False
+
+    with open('certificados.csv', newline='', encoding='utf-8') as csvfile:
+        lector = csv.DictReader(csvfile)
+        for fila in lector:
+            if fila['folio'] == folio and fila['codigo'] == codigo:
+                valido = True
+                break
+
+    if valido:
         pdf_path = f'/certificados/{codigo}.pdf'
         if os.path.exists(f'certificados/{codigo}.pdf'):
-            return jsonify({"valido": True, "mensaje": f"Código {codigo} válido", "pdf": pdf_path})
+            return jsonify({"valido": True, "mensaje": f"Folio y código válidos", "pdf": pdf_path})
         else:
-            return jsonify({"valido": True, "mensaje": f"Código {codigo} válido, pero no hay PDF disponible", "pdf": "#"})
+            return jsonify({"valido": True, "mensaje": f"Datos válidos, pero no hay PDF disponible", "pdf": "#"})
     else:
-        return jsonify({"valido": False, "mensaje": f"Código {codigo} no encontrado"})
+        return jsonify({"valido": False, "mensaje": "Folio y/o código no válidos"})
 
 @app.route('/certificados/<path:filename>')
 def descargar_pdf(filename):
