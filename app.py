@@ -79,6 +79,7 @@ def verificar():
 @app.route('/certificados/<path:filename>')
 def descargar_pdf(filename):
     return send_from_directory('certificados', filename)
-    
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
