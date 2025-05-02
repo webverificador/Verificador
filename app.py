@@ -15,6 +15,15 @@ pagina_html = """
     .container {
       max-width: 500px;
       margin: 100px auto;
+      padding: 30px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: white;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+      max-width: 500px;
+      margin: 100px auto;
       padding: 20px 30px;
       border: 1px solid #ddd;
       border-radius: 6px;
@@ -33,6 +42,12 @@ pagina_html = """
       font-size: 18px;
       color: #336699;
       font-weight: 400;
+      margin-bottom: 25px;
+      text-align: left;
+    }
+      font-size: 18px;
+      color: #336699;
+      font-weight: 400;
       margin-bottom: 20px;
     }
       font-size: 24px;
@@ -42,6 +57,12 @@ pagina_html = """
       border-radius: 6px;
     }
     label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 400;
+      color: #333;
+      text-align: left;
+    }
       display: block;
       text-align: left;
       margin-top: 20px;
