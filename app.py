@@ -21,7 +21,7 @@ pagina_html = """
       text-align: center;
     }
     h2 {
-      font-size: 24px;
+      font-size: 18px;
       color: #336699;
       background-color: #f5f5f5;
       padding: 10px;
@@ -59,20 +59,20 @@ pagina_html = """
       z-index: 999;
       left: 0; top: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: transparent;
     }
     .modal-content {
       background: white;
       margin: 3% 0 3% 3%;
       padding: 0;
-      width: 45%;
+      width: 35%;
       max-width: 950px;
       border-radius: 10px;
       overflow: hidden;
     }
     .modal-header {
-      background-color: #e6f2ff;
-      color: #0066cc;
+      background-color: white; border-bottom: 1px solid #ddd;
+      color: #2c3e50;
       font-weight: bold;
       padding: 15px;
       font-size: 16px;
@@ -81,10 +81,10 @@ pagina_html = """
     }
     .close {
       float: right;
-      font-size: 24px;
+      font-size: 18px;
       cursor: pointer;
       margin-right: 10px;
-      color: #666;
+      color: #aaa;
     }
     iframe {
       width: 100%;
