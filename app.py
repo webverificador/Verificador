@@ -11,7 +11,7 @@ pagina_html = """
   <meta charset='UTF-8'>
   <title>Verificación de Certificados</title>
   <style>
-    body { background-color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #fff; font-family: 'Segoe UI', 'Helvetica Neue', sans-serif; margin: 0; padding: 0; }
     .container {
       max-width: 500px;
       margin: 100px auto;
