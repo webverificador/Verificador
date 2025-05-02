@@ -65,7 +65,7 @@ pagina_html = """
       background: white;
       margin: 3% 0 3% 3%;
       padding: 0;
-      width: 80%;
+      width: 45%;
       max-width: 950px;
       border-radius: 10px;
       overflow: hidden;
