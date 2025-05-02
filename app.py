@@ -14,7 +14,7 @@ pagina_html = """
     body { background-color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
     .container {
       max-width: 500px;
-      margin: 100px auto;
+      margin: 100px 5% 100px auto;
       padding: 30px;
       border: 1px solid #ddd;
       border-radius: 10px;
@@ -65,7 +65,7 @@ pagina_html = """
       background: white;
       margin: 3% 0 3% 3%;
       padding: 0;
-      width: 80%;
+      width: 45%;
       max-width: 950px;
       border-radius: 10px;
       overflow: hidden;
