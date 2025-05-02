@@ -32,7 +32,7 @@ pagina_html = """
     h2 {
       font-size: 18px;
       color: #336699;
-      font-weight: 500;
+      font-weight: 400;
       margin-bottom: 20px;
     }
       font-size: 24px;
