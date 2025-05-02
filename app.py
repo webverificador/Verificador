@@ -78,7 +78,7 @@ pagina_html = """
       padding: 10px 16px;
     }
     .mensaje-validacion {
-      font-size: 15px;
+      font-size: 8px;
       font-weight: 400;
       color: #0066cc;
     }
