@@ -71,6 +71,11 @@ pagina_html = """
       overflow: hidden;
     }
     .modal-header {
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 12px 16px;
+      font-weight: 500;
       background-color: white; border-bottom: 1px solid #ddd;
       color: #2c3e50;
       font-weight: bold;
@@ -109,7 +114,7 @@ pagina_html = """
     <div class="modal-content">
       <div class="modal-header">
         <span class="close" onclick="cerrarModal()">&times;</span>
-        El certificado es válido, verifique los datos en el documento generado. ✔
+        <span style='color: #0066cc; font-weight: 500;'>El certificado es válido, verifique los datos en el documento generado.</span> <span style='color: #28a745; font-size: 18px;'>✔</span>
       </div>
       <iframe id="visor-pdf" src=""></iframe>
     </div>
