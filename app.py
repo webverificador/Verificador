@@ -14,7 +14,7 @@ pagina_html = """
     body { background-color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
     .container {
       max-width: 500px;
-      margin: 100px 5% 100px auto;
+      margin: 100px auto;
       padding: 30px;
       border: 1px solid #ddd;
       border-radius: 10px;
