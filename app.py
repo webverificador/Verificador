@@ -15,12 +15,26 @@ pagina_html = """
     .container {
       max-width: 500px;
       margin: 100px auto;
+      padding: 20px 30px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      text-align: center;
+      background: white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+      max-width: 500px;
+      margin: 100px auto;
       padding: 30px;
       border: 1px solid #ddd;
       border-radius: 10px;
       text-align: center;
     }
     h2 {
+      font-size: 18px;
+      color: #336699;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
       font-size: 24px;
       color: #336699;
       background-color: #f5f5f5;
