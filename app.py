@@ -74,11 +74,35 @@ pagina_html = """
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: white;
+      padding: 8px 16px;
+      border-bottom: 1px solid #ccc;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0066cc;
+      box-shadow: none;
+    }
+    .mensaje-validacion {
+      flex: 1;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0066cc;
+    }
+    .check {
+      font-size: 12px;
+      color: #999;
+      margin-left: 4px;
+    }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #ccc;
       padding: 10px 16px;
     }
     .mensaje-validacion {
-      font-size: 8px;
+      font-size: 15px;
       font-weight: 400;
       color: #0066cc;
     }
@@ -130,7 +154,7 @@ pagina_html = """
     <div class="modal-content">
       <div class="modal-header">
         <span class="close" onclick="cerrarModal()">&times;</span>
-        El certificado es válido, verifique los datos en el documento generado. ✔
+        <span class="mensaje-validacion">El certificado es válido, verifique los datos en el documento generado.</span><span class="check">✔</span> ✔
       </div>
       <iframe id="visor-pdf" src=""></iframe>
     </div>
