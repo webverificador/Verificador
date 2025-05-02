@@ -11,7 +11,7 @@ pagina_html = """
   <meta charset='UTF-8'>
   <title>Verificación de Certificados</title>
   <style>
-    body { background-color: #fff; font-family: 'Segoe UI', 'Helvetica Neue', sans-serif; margin: 0; padding: 0; }
+    body { background-color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
     .container {
       max-width: 500px;
       margin: 100px auto;
@@ -21,7 +21,7 @@ pagina_html = """
       text-align: center;
     }
     h2 {
-      font-size: 18px;
+      font-size: 24px;
       color: #336699;
       background-color: #f5f5f5;
       padding: 10px;
@@ -59,25 +59,36 @@ pagina_html = """
       z-index: 999;
       left: 0; top: 0;
       width: 100%; height: 100%;
-      background: transparent;
+      background: rgba(0,0,0,0.5);
     }
     .modal-content {
       background: white;
-      margin: 3% 0 3% 3%;
+      margin: 3% auto;
       padding: 0;
-      width: 35%;
+      width: 80%;
       max-width: 950px;
       border-radius: 10px;
       overflow: hidden;
     }
     .modal-header {
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 12px 16px;
-      font-weight: 500;
-      background-color: white; border-bottom: 1px solid #ddd;
-      color: #2c3e50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 16px;
+    }
+    .mensaje-validacion {
+      font-size: 15px;
+      font-weight: 400;
+      color: #0066cc;
+    }
+    .check {
+      font-size: 13px;
+      color: #888;
+      margin-left: 6px;
+    }
+      background-color: white;
+      color: #0066cc;
       font-weight: bold;
       padding: 15px;
       font-size: 16px;
@@ -86,10 +97,10 @@ pagina_html = """
     }
     .close {
       float: right;
-      font-size: 18px;
+      font-size: 24px;
       cursor: pointer;
       margin-right: 10px;
-      color: #aaa;
+      color: #666;
     }
     iframe {
       width: 100%;
@@ -114,7 +125,7 @@ pagina_html = """
     <div class="modal-content">
       <div class="modal-header">
         <span class="close" onclick="cerrarModal()">&times;</span>
-        <span style='color: #0066cc; font-weight: 500;'>El certificado es válido, verifique los datos en el documento generado.</span> <span style='color: #28a745; font-size: 18px;'>✔</span>
+        El certificado es válido, verifique los datos en el documento generado. ✔
       </div>
       <iframe id="visor-pdf" src=""></iframe>
     </div>
