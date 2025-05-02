@@ -77,6 +77,12 @@ pagina_html = """
       border-radius: 4px;
     }
     button {
+      display: block;
+      margin: 0 auto;
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
       background-color: #007bff;
       color: white;
       border: none;
