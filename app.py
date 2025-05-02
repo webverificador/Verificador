@@ -63,7 +63,7 @@ pagina_html = """
     }
     .modal-content {
       background: white;
-      margin: 3% auto;
+      margin: 3% 0 3% 3%;
       padding: 0;
       width: 80%;
       max-width: 950px;
