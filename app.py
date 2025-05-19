@@ -17,8 +17,7 @@ def index():
                 if row["folio"] == folio and row["codigo"] == codigo:
                     certificado = row["nombre_archivo"]
                     break
-    return render_template_string("""
-<!DOCTYPE html>
+    return render_template_string("""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
