@@ -1,17 +1,34 @@
-from flask import Flask, request, jsonify, render_template_string, send_from_directory
-import os
+
+from flask import Flask, render_template_string, request, send_from_directory
 import csv
+import os
 
 app = Flask(__name__)
+CERT_DIR = "certificados"
 
-pagina_html = """
+@app.route("/", methods=["GET", "POST"])
+def index():
+    certificado = None
+    if request.method == "POST":
+        folio = request.form["folio"]
+        codigo = request.form["codigo"]
+        with open("certificados.csv", newline="") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["folio"] == folio and row["codigo"] == codigo:
+                    certificado = row["nombre_archivo"]
+                    break
+    return render_template_string("""
 <!DOCTYPE html>
-<html lang='es'>
+<html>
 <head>
-  <meta charset='UTF-8'>
+  <meta charset="UTF-8">
   <title>Verificación de Certificados</title>
   <style>
-    body { background-color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: #fff;
+    }
     .container {
       max-width: 500px;
       margin: 100px auto;
@@ -19,42 +36,14 @@ pagina_html = """
       border: 1px solid #ddd;
       border-radius: 6px;
       background: white;
-      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
       box-shadow: 0 0 8px rgba(0,0,0,0.05);
-    }
-      max-width: 500px;
-      margin: 100px auto;
-      padding: 20px 30px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      text-align: center;
-      background: white;
-      box-shadow: 0 0 8px rgba(0,0,0,0.05);
-    }
-      max-width: 500px;
-      margin: 100px auto;
-      padding: 30px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      text-align: center;
     }
     h2 {
       font-size: 18px;
       color: #336699;
       font-weight: 400;
       margin-bottom: 25px;
-      text-align: left;
-    }
-      font-size: 18px;
-      color: #336699;
-      font-weight: 400;
-      margin-bottom: 20px;
-    }
-      font-size: 24px;
-      color: #336699;
-      background-color: #f5f5f5;
-      padding: 10px;
-      border-radius: 6px;
+      text-align: center;
     }
     label {
       display: block;
@@ -63,213 +52,51 @@ pagina_html = """
       color: #333;
       text-align: left;
     }
-      display: block;
-      text-align: left;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    input {
+    input[type="text"] {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      box-sizing: border-box;
+      padding: 8px 10px;
+      margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      box-sizing: border-box;
+      font-family: inherit;
     }
     button {
       display: block;
       margin: 0 auto;
-      margin-top: 10px;
-      padding: 8px 16px;
+      margin-top: 15px;
+      padding: 6px 16px;
       font-size: 14px;
-    }
-      background-color: #007bff;
+      background: linear-gradient(#007bff, #0056b3);
       color: white;
       border: none;
-      padding: 10px 20px;
-      margin-top: 20px;
-      border-radius: 5px;
-      font-size: 16px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    button:hover { background-color: #0056b3; }
-
-    #modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-    }
-    .modal-content {
-      background: white;
-      margin: 3% 0 3% 3%;
-      padding: 0;
-      width: 45%;
-      max-width: 950px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      padding: 8px 16px;
-      border-bottom: 1px solid #ccc;
-      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: #0066cc;
-      box-shadow: none;
-    }
-    .mensaje-validacion {
-      flex: 1;
-      text-align: left;
-      font-size: 14px;
-      font-weight: 400;
-      color: #0066cc;
-    }
-    .check {
-      font-size: 12px;
-      color: #999;
-      margin-left: 4px;
-    }
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ccc;
-      padding: 10px 16px;
-    }
-    .mensaje-validacion {
-      font-size: 15px;
-      font-weight: 400;
-      color: #0066cc;
-    }
-    .check {
-      font-size: 13px;
-      color: #888;
-      margin-left: 6px;
-    }
-      background-color: white;
-      color: #0066cc;
-      font-weight: bold;
-      padding: 15px;
-      font-size: 16px;
-      border-bottom: 1px solid #ccc;
-      text-align: center;
-    }
-    .close {
-      float: right;
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 10px;
-      color: #666;
-    }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
-  
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-</style>
+  </style>
 </head>
 <body>
   <div class="container">
     <h2>Verificación de Certificados</h2>
-    <label for="folio">Folio:</label>
-    <input type="text" id="folio" placeholder="Ej: 500588087549">
-    <label for="codigo">Código de Verificación:</label>
-    <input type="text" id="codigo" placeholder="Ej: 2d2d7b27e5c3">
-    <button onclick="verificar()">Consultar</button>
-    <div id="respuesta"></div>
+    <form method="POST">
+      <label>Folio:</label>
+      <input type="text" name="folio" placeholder="Ej: 500588087549" required>
+      <label>Código de Verificación:</label>
+      <input type="text" name="codigo" placeholder="Ej: 2d2d7b27e5c3" required>
+      <button type="submit">Consultar</button>
+    </form>
+    {% if certificado %}
+      <p style="margin-top: 20px; color: green;">Certificado encontrado:</p>
+      <iframe src="/ver/{{ certificado }}" width="100%" height="500px"></iframe>
+    {% endif %}
   </div>
-
-  <!-- Modal -->
-  <div id="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <span class="mensaje-validacion">El certificado es válido, verifique los datos en el documento generado.</span><span class="check">✔</span> ✔
-      </div>
-      <iframe id="visor-pdf" src=""></iframe>
-    </div>
-  </div>
-
-  <script>
-    function verificar() {
-      const folio = document.getElementById('folio').value.trim();
-      const codigo = document.getElementById('codigo').value.trim();
-      const respuesta = document.getElementById('respuesta');
-
-      if (!folio || !codigo) {
-        respuesta.innerText = 'Debe ingresar el folio y el código.';
-        respuesta.style.color = 'red';
-        return;
-      }
-
-      fetch('/verificar?folio=' + folio + '&codigo=' + codigo)
-        .then(res => res.json())
-        .then(data => {
-          if (data.valido) {
-            document.getElementById('visor-pdf').src = data.pdf;
-            document.getElementById('modal').style.display = 'block';
-          } else {
-            respuesta.innerText = "❌ " + data.mensaje;
-            respuesta.style.color = 'red';
-          }
-        });
-    }
-
-    function cerrarModal() {
-      document.getElementById('modal').style.display = 'none';
-      document.getElementById('visor-pdf').src = "";
-    }
-
-    window.onclick = function(event) {
-      const modal = document.getElementById('modal');
-      if (event.target === modal) cerrarModal();
-    }
-  </script>
 </body>
 </html>
-"""
+""", certificado=certificado)
 
-@app.route('/')
-def index():
-    return render_template_string(pagina_html)
+@app.route("/ver/<path:filename>")
+def ver_pdf(filename):
+    return send_from_directory(CERT_DIR, filename)
 
-@app.route('/verificar')
-def verificar():
-    folio = request.args.get('folio', '').strip()
-    codigo = request.args.get('codigo', '').strip()
-    valido = False
-
-    with open('certificados.csv', newline='', encoding='utf-8') as csvfile:
-        lector = csv.DictReader(csvfile)
-        for fila in lector:
-            if fila['folio'] == folio and fila['codigo'] == codigo:
-                valido = True
-                break
-
-    if valido:
-        pdf_path = f'/certificados/{codigo}.pdf'
-        if os.path.exists(f'certificados/{codigo}.pdf'):
-            return jsonify({"valido": True, "mensaje": "Datos válidos", "pdf": pdf_path})
-        else:
-            return jsonify({"valido": True, "mensaje": "Datos válidos, pero no hay PDF", "pdf": "#"})
-    else:
-        return jsonify({"valido": False, "mensaje": "Folio y/o código incorrectos"})
-
-@app.route('/certificados/<path:filename>')
-def descargar_pdf(filename):
-    return send_from_directory('certificados', filename)
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == "__main__":
+    app.run(debug=True)
